@@ -1,19 +1,25 @@
-from checker import checkout_negative
-import pytest
+from checkout import checkout_negative
+import yaml
 
 
-badarx = '/home/user/badarx/'
-tst = '/home/user/tst'
-out = '/home/user/out/'
-folder = '/home/user/folder1'
+with open('config.yaml') as f:
+    data = yaml.safe_load(f)
 
 
-def test_step1():
-    # Разархивируем битый архив arx2.7z в директории badarx
-    assert checkout_negative("cd {}; 7z e arx2.7z -o{} -y".format(badarx, folder), "ERROR"), 'negative test1 FAIL'
+def test_step1(make_files):
+    # test1
+    assert checkout_negative("cd {}; 7z e badarx.7z -o{} -y".format(data['folder_badarx'], data['folder_ext']), "ERROR"), "Test4 Fail"
 
 
 def test_step2():
-    # проверяем целостность битого архива arx2.7z
-    assert checkout_negative("cd {}; 7z t arx2.7z".format(badarx), "ERROR"), 'negative test2 FAIL'
+    # test2
+    assert checkout_negative("cd {}; 7z t badarx.7z".format(data['folder_badarx']), "ERROR"), "Test5 Fail"
+
+def test_step3():
+    # test3
+    assert checkout_negative("cd {}; 7z e -tzip {}/arx1.zp".format(data['folder_in'], data['folder_badarx']), "ERROR"), "Test1 Fail"
+
+def test_step4():
+    # test4
+    assert checkout_negative("cd {}; 7z a -tzp {}/arx1.zip".format(data['folder_in'], data['folder_badarx']), "ERROR"), "Test1 Fail"
 
