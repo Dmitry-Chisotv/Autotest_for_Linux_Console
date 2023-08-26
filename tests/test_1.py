@@ -18,6 +18,8 @@ def test_step2():
 def test_step3():
     assert checkout("cd/1home/......"), 'TEST3 FAIL'
 
+def test_step4():
+    assert checkout("cd /home/user/tst; 7z a /home/user/out/arx2"), 'TEST1 FAIL'
 
 
 
